@@ -1,4 +1,6 @@
-﻿Imports Microsoft.VisualBasic.ApplicationServices
+﻿Imports Microsoft.EntityFrameworkCore
+Imports Microsoft.VisualBasic.ApplicationServices
+Imports TradingJournal.Data
 
 Namespace My
     ' The following events are available for MyApplication:
@@ -24,6 +26,38 @@ Namespace My
     ' End Sub
 
     Partial Friend Class MyApplication
+        Protected Overrides Function OnStartup(eventArgs As StartupEventArgs) As Boolean
+            Using context = New TradingJournal.Data.TradeJournalDBContext
+                context.Database.Migrate()
 
+                'Test Code
+                'Dim assetId = context.Add(New TradeAsset With {.Name = "MNQ", .Type = "Futures"}).Entity.Id
+                'context.Add(New TradeAsset With {.Name = "Nasdaq", .Type = "ETF"})
+                'context.Add(New TradeAsset With {.Name = "Nasdaq", .Type = "Futures"})
+
+                'context.SaveChanges()
+
+                'Dim tradeId = context.Add(New Trade With {
+                '                          .AssetId = context.TradeAsset.First().Id,
+                '                          .Pnl = -100.23,
+                '                          .Fees = 2.1,
+                '                          .Quanity = 1,
+                '                          .StartTime = DateTime.Now,
+                '                          .EndTime = DateTime.Now.AddMinutes(-60)
+                '                          }).Entity.Id
+
+                'context.SaveChanges()
+
+                'Dim entryId = context.Add(New TradeJournalEntry With {
+                '                          .TradeId = context.Trade.First().Id,
+                '                          .Title = "Bad day for MNQ.",
+                '                          .Entry = "I took a trade and lost."}).Entity.Id
+
+
+                'context.SaveChanges()
+            End Using
+
+            Return MyBase.OnStartup(eventArgs)
+        End Function
     End Class
 End Namespace
